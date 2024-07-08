@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}Clustering{% endblock %}
+
+{% block content %}
+<div class="container mt-4" style="max-width: 80%;">
+    <h1 class="mt-4">Clustering</h1>
+    <!-- Predict Single Record Container -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Insert Single Record</h5>
+            <hr>
+            <form action="{{ url_for('clustering') }}" method="post">
+                <div class="form-row">
+                    <!-- id_student -->
+                    <div class="form-group col-md-4">
+                        <label for="id_student">ID Student:</label>
+                        <input type="text" class="form-control" id="id_student" name="id_student" required>
+                    </div>
+                    <!-- code_module -->
+                    <div class="form-group col-md-4">
+                        <label for="code_module">Module Code:</label>
+                        <select class="form-control" id="code_module" name="code_module" required>
+                            <option value="AAA">AAA</option>
+                            <option value="BBB">BBB</option>
+                            <option value="CCC">CCC</option>
+                            <option value="DDD">DDD</option>
+                            <option value="EEE">EEE</option>
+                            <option value="FFF">FFF</option>
+                            <option value="GGG">GGG</option>
+                        </select>
+                    </div>
+                    <!-- sum_click -->
+                    <div class="form-group col-md-4">
+                        <label for="sum_click">Sum Click:</label>
+                        <input type="number" class="form-control" id="sum_click" name="sum_click" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <!-- age_band -->
+                    <div class="form-group col-md-4">
+                        <label for="age_band">Age:</label>
+                        <select class="form-control" id="age_band" name="age_band" required>
+                            <option value="18-21">18-21</option>
+                            <option value="22-28">22-28</option>
+                            <option value="35<=">35<=</option>
+                        </select>
+                    </div>
+                    <!-- imd_band -->
+                    <div class="form-group col-md-4">
+                        <label for="imd_band">Index of Multiple Deprivation:</label>
+                        <select class="form-control" id="imd_band" name="imd_band" required>
+                            <option value="0-10%">0-10%</option>
+                            <option value="10-20">10-20%</option>
+                            <option value="20-30%">20-30%</option>
+                            <option value="30-40%">30-40%</option>
+                            <option value="40-50%">40-50%</option>
+                            <option value="50-60%">50-60%</option>
+                            <option value="60-70%">60-70%</option>
+                            <option value="70-80%">70-80%</option>
+                            <option value="80-90%">80-90%</option>
+                            <option value="90-100%">90-100%</option>
+                        </select>
+                    </div>
+                    <!-- highest_education -->
+                    <div class="form-group col-md-4">
+                        <label for="highest_education">Highest Education:</label>
+                        <select class="form-control" id="highest_education" name="highest_education" required>
+                            <option value="No Formal quals">No Formal Qualifications</option>
+                            <option value="Lower Than A Level">Lower Than A Level</option>
+                            <option value="A Level or Equivalent">A Level or Equivalent</option>
+                            <option value="HE Qualification">HE Qualification</option>
+                            <option value="Post Graduate Qualification">Post Graduate Qualification</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <!-- studied_credits -->
+                    <div class="form-group col-md-4">
+                        <label for="studied_credits">Studied Credits:</label>
+                        <input type="number" class="form-control" id="studied_credits" name="studied_credits" required>
+                    </div>
+                    <!-- gender -->
+                    <div class="form-group col-md-4">
+                        <label>Gender:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="gender_male" value="M" checked>
+                            <label class="form-check-label" for="gender_male">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender" id="gender_female" value="F">
+                            <label class="form-check-label" for="gender_female">Female</label>
+                        </div>
+                    </div>
+                    <!-- disability -->
+                    <div class="form-group col-md-4">
+                        <label>Disability:</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="disability" id="disability_yes" value="Y">
+                            <label class="form-check-label" for="disability_yes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="disability" id="disability_no" value="N" checked>
+                            <label class="form-check-label" for="disability_no">No</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" name="single_record" value="true" class="btn btn-primary">Predict Single Record</button>
+            </form>
+        </div>
+    </div>
+
+  <!-- Predicted Single Record Information -->
+    {% if single_record %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Predicted Single Record</h5>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>ID Student:</strong> {{ input_data['id_student'] }}</p>
+                    <p><strong>Code Module:</strong> {{ input_data['code_module'] }}</p>
+                    <p><strong>Gender:</strong> {{ "Male" if input_data['gender'] == 1 else "Female" }}</p>
+                    <p><strong>IMD Band:</strong> {{ input_data['imd_band'] }}</p>
+                    <p><strong>Disability:</strong> {{ "Yes" if input_data['disability'] == 1 else "No" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Sum Click:</strong> {{ input_data['sum_click'] }}</p>
+                    <p><strong>Highest Education:</strong> {{ input_data['highest_education'] }}</p>
+                    <p><strong>Age Band:</strong> {{ input_data['age_band'] }}</p>
+                    <p><strong>Studied Credits:</strong> {{ input_data['studied_credits'] }}</p>
+                    <p style="color: green; font-size: 20px;"><strong><span> Cluster:</span></strong> {{ input_data['cluster'] }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- Batch Upload Form Container -->
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Upload CSV for Batch Prediction</h5>
+            <hr>
+            <form action="{{ url_for('clustering') }}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" class="form-control-file" id="batch_upload" name="batch_upload" accept=".csv" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload & Predict</button>
+            </form>
+        </div>
+    </div>
+
+ <!-- Display Batch Upload Results -->
+    {% if table %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Batch Upload Results</h5>
+            <hr>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                {{ table|safe }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+
+    <!-- Display Cluster Distribution Plot -->
+    {% if plot %}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5 class="card-title">Cluster Distribution Plot</h5>
+            <hr>
+            <img src="{{ url_for('static', filename='uploads/clustered_plot.png') }}" class="img-fluid" alt="Cluster Distribution Plot">
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

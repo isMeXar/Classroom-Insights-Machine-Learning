@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Classification{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Classification</h1>
+    <p>Welcome to the classification page. Upload a video to predict engagement levels.</p>
+
+    <!-- Upload Form -->
+    <form method="POST" enctype="multipart/form-data" action="{{ url_for('classification') }}">
+        <div class="form-group">
+            <label for="video">Upload Videos:</label>
+            <input type="file" name="video" id="video" accept="video/*" class="form-control-file">
+        </div>
+        <button type="submit" class="btn btn-primary">Predict</button>
+    </form>
+
+    <!-- Plot Container -->
+    {% if plot_path %}
+    <div class="mt-4">
+        <h2>Label Distribution Plot</h2>
+        <img src="{{ plot_path }}" class="img-fluid" alt="Label Distribution Plot">
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
